@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Projeto 09</title>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: 'all' } }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+body > * {
+  max-width: 42em;
+}
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
+}
+pre, code {
+  max-width: 50em;
+  font-family: monospace;
+}
+pre.oct-code {
+  border: 1px solid Grey;
+  padding: 5px;
+}
+pre.oct-code-output {
+  margin-left: 2em;
+}
+span.comment {
+  color: ForestGreen;
+}
+span.keyword {
+  color: Blue;
+}
+span.string {
+  color: DarkOrchid;
+}
+footer {
+  margin-top: 2em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: Blue;
+}
+h2 {
+  font-family: "Roboto Condensed", serif;
+  margin-top: 1.5em;
+}
+h2 a, h2 a:visited {
+  color: Black;
+}
+</style>
+
+</head>
+<body>
+<h1>Projeto 09</h1>
+
+<p><b>Autor:</b> Marlon da Silva Rogério</p>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#node1">Referências</a></li>
+</ul>
+<h2><a id="node1">Referências</a></h2>
+<p><b>GONZALEZ, R. C.</b>, WOODS, R. E. Processamento de Imagens Digitais.
+Editora Edgard Blucher, ISBN São Paulo, 2000.
+<b>Support MathWorks</b>, 2021. Disponível em: <a href="https://www.mathworks.com/help/">https://www.mathworks.com/help/</a>.
+Acesso em: 18 de julho. de 2021.</p>
+
+<pre class="oct-code"><span class="comment">%Uma etapa de pré-processamento para um aplicativo de microscopia aborda o problema de isolar</span>
+<span class="comment">%partículas redondas individuais de partículas semelhantes que se sobrepõem em grupos de duas</span>
+<span class="comment">%ou mais partículas (ver imagem a seguir**).</span>
+<span class="comment">%Partindo do princípio de que todas as partículas são do mesmo tamanho, proponha um algoritmo</span>
+<span class="comment">%morfológico que produza três imagens que possuam, respectivamente:</span>
+<span class="comment">%(a) Apenas partículas que se fundiram com a borda da imagem.</span>
+<span class="comment">%(b) Apenas partículas sobrepostas.</span>
+<span class="comment">%(c) Apenas partículas que não se sobrepõem.</span>
+<span class="comment">%(d) tentar separar Apenas partículas para que não “se sobrepõem” (processar item b depois unir</span>
+<span class="comment">%com o restante).</span>
+<span class="comment">%   -- A Ideia é deixar pronto para aplicar um algoritmo de contagem (utilize 'regionprops')</span>
+
+
+img = imread(<span class="string">'segmentacao.tif'</span>);
+
+<span class="comment">% Obejtos Objetos conectados às bodas</span>
+bordas = imclearborder(img, 8);
+bordas = img - bordas;
+
+<span class="comment">% Obejtos Sobrepostos</span>
+sobreapostos = bwareaopen(img, 576);
+sobreapostos = sobreapostos - bordas;
+
+<span class="comment">% Objetos Isolados</span>
+isolados = img - sobreapostos - bordas;
+
+figure
+subplot(1,4,1);
+imshow(img);
+title(<span class="string">'Imagem Original'</span>);
+
+subplot(1,4,2);
+imshow(bordas);
+title(<span class="string">'Objetos conectados a borda'</span>);
+
+subplot(1,4,3);
+imshow(sobreapostos);
+title(<span class="string">'Objetos Sobreposto'</span>);
+
+subplot(1,4,4);
+imshow(isolados);
+title(<span class="string">'Objetos Isolados'</span>);</pre>
+<img src="projeto09-1.png" alt="projeto09-1.png">
+<footer>
+<hr>
+<a href="https://www.octave.org">Published with GNU Octave 6.2.0</a>
+</footer>
+<!--
+##### SOURCE BEGIN #####
+%% Projeto 09
+% *Autor:* Marlon da Silva Rogério
+
+%% Referências
+% *GONZALEZ, R. C.*, WOODS, R. E. Processamento de Imagens Digitais.
+% Editora Edgard Blucher, ISBN São Paulo, 2000.
+% *Support MathWorks*, 2021. Disponível em: <https://www.mathworks.com/help/>.
+% Acesso em: 18 de julho. de 2021.
+
+%Uma etapa de pré-processamento para um aplicativo de microscopia aborda o problema de isolar
+%partículas redondas individuais de partículas semelhantes que se sobrepõem em grupos de duas
+%ou mais partículas (ver imagem a seguir**).
+%Partindo do princípio de que todas as partículas são do mesmo tamanho, proponha um algoritmo
+%morfológico que produza três imagens que possuam, respectivamente:
+%(a) Apenas partículas que se fundiram com a borda da imagem.
+%(b) Apenas partículas sobrepostas.
+%(c) Apenas partículas que não se sobrepõem.
+%(d) tentar separar Apenas partículas para que não “se sobrepõem” (processar item b depois unir
+%com o restante).
+%   -- A Ideia é deixar pronto para aplicar um algoritmo de contagem (utilize 'regionprops')
+
+
+img = imread('segmentacao.tif');
+
+% Obejtos Objetos conectados às bodas
+bordas = imclearborder(img, 8);
+bordas = img - bordas;
+
+% Obejtos Sobrepostos
+sobreapostos = bwareaopen(img, 576);
+sobreapostos = sobreapostos - bordas;
+
+% Objetos Isolados
+isolados = img - sobreapostos - bordas;
+
+figure
+subplot(1,4,1);
+imshow(img);
+title('Imagem Original');
+
+subplot(1,4,2);
+imshow(bordas);
+title('Objetos conectados a borda');
+
+subplot(1,4,3);
+imshow(sobreapostos);
+title('Objetos Sobreposto');
+
+subplot(1,4,4);
+imshow(isolados);
+title('Objetos Isolados');
+##### SOURCE END #####
+-->
+</body>
+</html>
